@@ -1,5 +1,5 @@
 import mongoose, {Schema} from "mongoose";
-import { jwt } from "jsonwebtoken";//provied data/password to anybody asking for access
+import { jwt } from "jsonwebtoken";//provide data/password to anybody asking for access
 import bcrypt from "bcrypt"
 
 const userSchema=new mongoose.Schema({
@@ -79,10 +79,6 @@ userSchema.methods.generateAccessToken=function(){
         expiresIn:REFRESH_TOKEN_EXPIRY
     }
 )
-}
-
-userSchema.methods.generateRefreshTokenToken=function(){
-
 }
 
 

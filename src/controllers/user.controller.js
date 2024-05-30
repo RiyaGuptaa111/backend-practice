@@ -4,6 +4,16 @@ import {User} from "../models/user.models.js"
 import {uploadOnCloudinary} from "../uti;s/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 
+//get user details from frontend (here json/raw and form data)
+//validation -not empty
+//check if user already exists
+//check for images,avatar from mutler
+//upload them to cloudinary and check again
+//create user object - create entry in db
+//remove password and refresh token field from response
+//check for user creation 
+//return res
+
 const registerUser=asyncHandler(async(req,res)=>{
     const {fullName,email,username,password}=req.body// express fetch and gives you all fields
 
@@ -30,10 +40,10 @@ const registerUser=asyncHandler(async(req,res)=>{
     console.log(req.files);
 //mutler fetches and gives you files access
     const avatarLocalPath=req.files?.avatar[0]?.path;
-    const coverImageLocalImage=req.files?.coverImage[0].path;
+    // const coverImageLocalImage=req.files?.coverImage[0].path;
     let coverImageLocalPath;
     if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0){
-        coverImageLocalPath=req.files.coverImage
+        coverImageLocalPath=req.files.coverImage[0].path
     }
 
     if(!avatarLocalPath){
@@ -42,7 +52,7 @@ const registerUser=asyncHandler(async(req,res)=>{
 
 
     const avatar=await uploadOnCloudinary(avatarLocalPath)
-    const coverImage=await uploadOnCloudinary(coverImageLocalImage)
+    const coverImage=await uploadOnCloudinary(coverImageLocalPath)
 
 
     if(!avatar){
@@ -67,7 +77,7 @@ const registerUser=asyncHandler(async(req,res)=>{
     }
 
     return res.status(201).json(
-         new ApiResponse(200,createdUser,message,"user ergistered successfully")  
+         new ApiResponse(200,createdUser,"user ergistered successfully")  
     )
 
 
@@ -76,12 +86,3 @@ const registerUser=asyncHandler(async(req,res)=>{
 export {registerUser}
 
 
-//get user details from frontend (here json/raw and form data)
-//validation -not empty
-//check if user already exists
-//check for images,avatar from mutler
-//upload them to cloudinary and check again
-//create user object - create entry in db
-//remove password and refresh token field from response
-//check for user creation 
-//return res
